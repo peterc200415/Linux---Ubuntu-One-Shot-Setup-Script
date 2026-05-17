@@ -37,7 +37,8 @@ mkdir -p "$NVM_DIR"
 curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | \
     NVM_DIR="$NVM_DIR" bash > /dev/null 2>&1
 source "$NVM_DIR/nvm.sh"
-nvm install --lts --quiet && nvm alias default node
+nvm install --lts 2>&1 | tail -3
+nvm alias default node
 cat > /etc/profile.d/nvm.sh << 'EOF'
 export NVM_DIR="/opt/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
