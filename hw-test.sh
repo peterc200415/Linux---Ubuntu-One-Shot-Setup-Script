@@ -67,8 +67,11 @@ ip -o link show | awk '{print "  "$2, $9}' | grep -v lo | tee -a "$LOG"
 echo "" >> "$LOG"
 
 echo ""; echo -e "${GREEN}========== Test Complete ==========${NC}"; echo "Log: $LOG"; echo ""
-if grep -qiE "FAILED|UNCOR" "$LOG" 2>/dev/null; then
-    echo -e "  ${RED}Warning: Issues found${NC}"; grep -iE "FAILED|UNCOR" "$LOG" | sed 's/^/  /'
+# 排除 stress-ng "failed: 0"（0 代表沒問題）及 grep 自身輸出
+ISSUES=$(grep -iE "FAILED|UNCOR" "$LOG" 2>/dev/null | grep -v "failed: 0" | grep -v "^$" || true)
+if [[ -n "$ISSUES" ]]; then
+    echo -e "  ${RED}Warning: Issues found${NC}"
+    echo "$ISSUES" | sed 's/^/  /'
 else
     echo -e "  ${GREEN}OK: No obvious issues${NC}"
 fi
