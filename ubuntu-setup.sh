@@ -26,9 +26,10 @@ info "[3/9] 網路工具..."
 apt-get install -y -qq iperf3 nmap net-tools mtr dnsutils ncat traceroute
 
 info "[4/9] Python..."
-apt-get install -y -qq python3 python3-pip python3-venv python3-dev
-pip3 install --upgrade pip --quiet
-pip3 install pipx --quiet && pipx ensurepath
+apt-get install -y -qq python3 python3-pip python3-venv python3-dev python3-full
+# Ubuntu 24.04+ PEP 668：pipx 改用 apt 安裝
+apt-get install -y -qq pipx
+pipx ensurepath
 
 info "[5/9] Node.js (nvm)..."
 export NVM_DIR="/opt/nvm"
